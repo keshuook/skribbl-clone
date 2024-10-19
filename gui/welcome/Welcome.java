@@ -37,7 +37,7 @@ public class Welcome extends JFrame {
         serverIP.setBounds(250, 150, 300, 50);
         serverIP.setFont(INPUTFONT);
         
-        JTextField clientName = new JTextField("Kapes");
+        JTextField clientName = new JTextField("");
         clientName.setBounds(250, 300, 300, 50);
         clientName.setFont(INPUTFONT);
         

@@ -54,6 +54,7 @@ public class Client implements Runnable {
     }
     public void run() {
         while (true) {
+            writer.println("0"); // Send ping packet so client knows server is connected to it
             if((System.currentTimeMillis() - time) > 1000) {
                 server.sendAllClients("2\n"+userName); // Client has left the game
                 server.disconnection(this);
@@ -61,11 +62,12 @@ public class Client implements Runnable {
             }
             while (reader.ready()) {
                 switch (reader.getInt()) {
-                    case 0: // Ping packet
-                        writer.print("0\n");
-                        break;
                     case 1: // Set Name packet
                         this.userName = reader.getString();
+                        if(this.userName.trim().length() == 0) {
+                            writer.println("3\n&Please use a valid name!");
+                            return;
+                        }
                         server.connection(this);
                         server.sendAllClients("1\n"+userName); // Send user joined packet
                         break;

@@ -41,6 +41,7 @@ public class SkribblServer extends ServerSocket implements Runnable {
     public void connection(Client client) {
         ui.addUser(client.getUsername());
         ui.addInformation(client.getUsername()+" joined the game from "+client.getAddress());
+        client.send("0");
         clients.forEach(clientElement -> {
             if(clientElement != client) client.send("1\n"+clientElement.getUsername()); // It already receives the packet which acknowledges that it has joined
         });

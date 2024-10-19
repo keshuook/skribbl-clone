@@ -48,20 +48,20 @@ public class SkribblClient extends Socket implements Runnable {
     }
     public void run() {
         time = System.currentTimeMillis();
+        writer.println("0");
+
         while (true) {
             // Ping server so that it knows that the client is still connected
-            writer.print(0 + "\n");
+            writer.println("0");
+
             if((System.currentTimeMillis()-time) > 1000) {
                 ui.displayWord("Connection Timed Out");
                 ErrorUI.showError(new SocketTimeoutException());
                 return;
             }
             while (reader.ready()) {
-                time = System.currentTimeMillis();
+                time = System.currentTimeMillis(); // Packet 0 also causes this to happen
                 switch (reader.getInt()) {
-                    case 0:
-                        writer.print(0 + "\n");
-                        break;
                     case 1: // Player Join
                         ui.addUser(reader.getString());
                         break;
@@ -88,6 +88,11 @@ public class SkribblClient extends Socket implements Runnable {
                     default:
                         break;
                 }
+            }
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
