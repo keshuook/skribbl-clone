@@ -141,6 +141,10 @@ public class SkribblServer extends ServerSocket implements Runnable {
         drawerIndex = 0;
         this.completedRounds = 0;
         this.numberOfRounds = nOfRounds;
+        clients.forEach(client -> {
+            client.resetScore();
+            client.sendScore();
+        });
         startSkribbling();
     }
     public void run() {

@@ -54,7 +54,7 @@ public class SkribblClient extends Socket implements Runnable {
             // Ping server so that it knows that the client is still connected
             writer.println("0");
 
-            if((System.currentTimeMillis()-time) > 1000) {
+            if((System.currentTimeMillis()-time) > 100) {
                 ui.displayWord("Connection Timed Out");
                 ErrorUI.showError(new SocketTimeoutException());
                 return;

@@ -25,6 +25,11 @@ public class Client implements Runnable {
     public void addScore(int score) {
         this.score += score;
     }
+
+    public void resetScore() {
+        this.score = 0;
+    }
+
     public String getUsername() {
         return userName;
     }
@@ -55,7 +60,7 @@ public class Client implements Runnable {
     public void run() {
         while (true) {
             writer.println("0"); // Send ping packet so client knows server is connected to it
-            if((System.currentTimeMillis() - time) > 1000) {
+            if((System.currentTimeMillis() - time) > 100) {
                 server.sendAllClients("2\n"+userName); // Client has left the game
                 server.disconnection(this);
                 break; // Client has stopped sending pings
@@ -65,7 +70,10 @@ public class Client implements Runnable {
                     case 1: // Set Name packet
                         this.userName = reader.getString();
                         if(this.userName.trim().length() == 0) {
-                            writer.println("3\n&Please use a valid name!");
+                            writer.println("3\n#Please use a valid name!");
+                            return;
+                        } else if(this.userName.indexOf(' ') != -1 || this.userName.indexOf('#') != -1 || this.userName.indexOf('&') != -1) {
+                            writer.println("3\n#' ', '#' and '&' are not allowed in usernames.");
                             return;
                         }
                         server.connection(this);

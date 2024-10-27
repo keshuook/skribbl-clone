@@ -37,7 +37,4 @@ public class Reader {
         String s = getString();
         return s.equals("") ? -1 : Integer.parseInt(s); // Blank packets get sent sometimes which cause errors
     }
-    public void waitForInput() {
-        while (!ready());
-    }
 }
